@@ -1,7 +1,11 @@
 import joblib
 import json
 import logging
+import requests
+import shutil
 from typing import Any, Optional
+from pathlib import Path
+
 from sklearn.pipeline import Pipeline
 from core.config import settings
 from core.exceptions import ArtifactLoadError
@@ -21,6 +25,22 @@ class ModelArtifacts:
         self.shap_background: Any = None
         self.feature_names: Optional[list] = None
         self.is_loaded = False
+
+    def download_if_missing(self, path: Path, url: str):
+        if not path.exists():
+            logger.info(f"Downloading {path.name} from {url}...")
+            path.parent.mkdir(parents=True, exist_ok=True)
+            try:
+                response = requests.get(url, stream=True)
+                response.raise_for_status()
+                with open(path, 'wb') as f:
+                    shutil.copyfileobj(response.raw, f)
+                logger.info(f"Downloaded {path.name}")
+            except Exception as e:
+                logger.error(f"Failed to download {path.name}: {e}")
+        else:
+            logger.info(f"Artifact {path.name} found locally. Skipping download.")
+
 
     @classmethod
     def get_instance(cls):
@@ -43,7 +63,12 @@ class ModelArtifacts:
         logger.info(f"Loading models from {model_dir}")
         logger.info(f"Loading artifacts from {artifacts_dir}")
         
+        # Ensure all artifacts are present
+        for path, url in settings.ARTIFACT_URLS.items():
+            self.download_if_missing(path, url)
+
         try:
+
             # Load Model
             model_path = model_dir / settings.MODEL_FILENAME
             if model_path.exists():

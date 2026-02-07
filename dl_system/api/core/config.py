@@ -9,12 +9,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Let's assume the user wants the root of the "system" which is usually where artifacts might be or one level up.
 # Previous BASE_DIR was 'api' folder. ARTIFACTS_DIR was sibling to 'api'.
-ROOT_DIR = Path(__file__).resolve().parent.parent.parent.parent
-# If file is c:\...\api\core\config.py
-# parent -> core
-# parent.parent -> api
-# parent.parent.parent -> dl_system
-# parent.parent.parent.parent -> dl_system/api
+# api/core/config.py -> api/core -> api
+ROOT_DIR = Path(__file__).resolve().parent.parent
 
 NAMING_CONVENTION = "Deep Learning Diabetes Risk Prediction System"
 
@@ -51,6 +47,7 @@ class Settings(BaseSettings):
     # Paths
     # We define base directories as Path objects
     BASE_DIR: Path = ROOT_DIR
+    # These paths are relative to the API root
     ARTIFACTS_DIR: Path = BASE_DIR / "artifacts/dl"
     MODEL_DIR: Path = BASE_DIR / "models/dl"
     
@@ -61,6 +58,22 @@ class Settings(BaseSettings):
     SCALER_FILENAME: str = "temperature_scaler.keras"
     THRESHOLD_FILENAME: str = "dl_threshold.json"
     BACKGROUND_DATA_FILENAME: str = "background_data.csv"
+    
+    # Github URL
+    GITHUB_RAW_URL_BASE: str = "https://github.com/D0nG4667/Diabetes_Disease_Outcome_AI_System/raw/main"
+
+    @property
+    def ARTIFACT_URLS(self):
+        """Map local path properties to their remote URLs"""
+        return {
+            self.model_path_abs: f"{self.GITHUB_RAW_URL_BASE}/models/dl/{self.MODEL_FILENAME}",
+            self.scaler_path_abs: f"{self.GITHUB_RAW_URL_BASE}/models/dl/{self.SCALER_FILENAME}",
+            self.preprocessor_path_abs: f"{self.GITHUB_RAW_URL_BASE}/models/dl/{self.PREPROCESSOR_FILENAME}",
+            self.feature_creator_path_abs: f"{self.GITHUB_RAW_URL_BASE}/models/dl/{self.FEATURE_CREATOR_FILENAME}",
+            self.threshold_path_abs: f"{self.GITHUB_RAW_URL_BASE}/artifacts/dl/{self.THRESHOLD_FILENAME}",
+            self.background_data_path_abs: f"{self.GITHUB_RAW_URL_BASE}/artifacts/dl/{self.BACKGROUND_DATA_FILENAME}",
+        }
+
     
     @property
     def model_path_abs(self) -> Path:

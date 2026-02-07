@@ -3,9 +3,13 @@ import pandas as pd
 import tensorflow as tf
 import logging
 import json
+from pathlib import Path
 from core.config import settings
 from core.exceptions import ArtifactLoadError
 from utils.temperature_scaling import TemperatureScaler
+import requests
+import shutil
+
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +23,23 @@ class ModelArtifacts:
         self.background_data = None
         self.is_loaded = False
 
+    def download_if_missing(self, path: Path, url: str):
+        if not path.exists():
+            logger.info(f"Downloading {path.name} from {url}...")
+            path.parent.mkdir(parents=True, exist_ok=True)
+            try:
+                response = requests.get(url, stream=True)
+                response.raise_for_status()
+                with open(path, 'wb') as f:
+                    shutil.copyfileobj(response.raw, f)
+                logger.info(f"Downloaded {path.name}")
+            except Exception as e:
+                logger.error(f"Failed to download {path.name}: {e}")
+                # We don't raise here, we let the load fail naturally or warn
+        else:
+            logger.info(f"Artifact {path.name} found locally. Skipping download.")
+
+
     def load_artifacts(self):
         """
         Loads all ML artifacts into memory.
@@ -28,7 +49,13 @@ class ModelArtifacts:
             return
 
         logger.info("Loading artifacts...")
+        
+        # Ensure all artifacts are present
+        for path, url in settings.ARTIFACT_URLS.items():
+            self.download_if_missing(path, url)
+
         try:
+
             # 1. Load Keras Model
             if not settings.model_path_abs.exists():
                 logger.warning(f"Model file not found at {settings.model_path_abs}. Skipping load.")

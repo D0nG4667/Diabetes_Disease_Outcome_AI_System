@@ -5,8 +5,8 @@ from pydantic_settings import BaseSettings
 
 # Define Paths
 # Using __file__ to reliably get the project root.
-# api/core/config.py -> api/core -> api -> ml_system (root) -> ml_system/api
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+# api/core/config.py -> api/core -> api
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ENV when using standalone uvicorn server running FastAPI in api directory
 ENV_PATH = Path(".env")
@@ -18,9 +18,11 @@ TRAIN_TEST = RAW_DIR / "kaggle/diabetes.csv"
 PROCESSED_DIR = DATASET_DIR / "processed"
 TRAIN_TEST_PROCESSED = PROCESSED_DIR / "diabetes.csv"
 
+# Paths are relative to api directory to work in Docker and local
+# If files are missing, they will be downloaded here.
 PLOTS = BASE_DIR / "plots"
-SAVE_MODELS = BASE_DIR / "models"
-ML_MODELS = SAVE_MODELS / "ml"
+SAVE_MODELS = BASE_DIR / "models" # api/models
+ML_MODELS = SAVE_MODELS / "ml"     # api/models/ml
 
 EDA_ARTIFACTS = BASE_DIR / "artifacts" / "eda"
 PREPROCESSING_ARTIFACTS = BASE_DIR / "artifacts" / "preprocessing"
@@ -60,6 +62,32 @@ class Settings(BaseSettings):
     MODEL_FILENAME: str = "XGBClassifier__RandomUnderSampler.joblib"
     THRESHOLD_FILENAME: str = "ml_threshold.json"
     SHAP_BACKGROUND_FILENAME: str = "shap_background.joblib"
+    
+    # Github URL
+    GITHUB_RAW_URL_BASE: str = "https://github.com/D0nG4667/Diabetes_Disease_Outcome_AI_System/raw/main"
+
+    @property
+    def model_path_abs(self) -> Path:
+        return self.MODEL_DIR / self.MODEL_FILENAME
+
+    @property
+    def threshold_path_abs(self) -> Path:
+        return self.ARTIFACTS_DIR / self.THRESHOLD_FILENAME
+
+    @property
+    def shap_background_path_abs(self) -> Path:
+        return self.ARTIFACTS_DIR / self.SHAP_BACKGROUND_FILENAME
+
+    @property
+    def ARTIFACT_URLS(self):
+        """Map local path properties to their remote URLs"""
+        # Note: ML files are usually in models/ml and artifacts/ml in the repo structure
+        return {
+            self.model_path_abs: f"{self.GITHUB_RAW_URL_BASE}/models/ml/{self.MODEL_FILENAME}",
+            self.threshold_path_abs: f"{self.GITHUB_RAW_URL_BASE}/artifacts/ml/{self.THRESHOLD_FILENAME}",
+            self.shap_background_path_abs: f"{self.GITHUB_RAW_URL_BASE}/artifacts/ml/{self.SHAP_BACKGROUND_FILENAME}",
+        }
+
     
     class Config:
         env_file = ".env"
