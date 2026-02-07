@@ -185,7 +185,7 @@ pip install uv
 
 ### **2. Clone the repository**
 ```bash
-git clone https://github.com/DonG4667/Diabetes_Disease_Outcome_AI_System.git
+git clone https://github.com/D0nG4667/Diabetes_Disease_Outcome_AI_System.git
 cd Diabetes_Disease_Outcome_AI_System
 ```
 
@@ -270,6 +270,6 @@ For commercial licensing, custom implementations, or collaboration opportunities
 <p align="center">
   <b>Made with ❤️ by <a href="https://linkedin.com/in/dr-gabriel-okundaye" target="_blank">Dr. Gabriel Okundaye</a></b>
   <br>
-  🌐 <a href="https://gabcares.xyz" target="_blank">gabcares.xyz</a> &nbsp;|&nbsp; 🐙 <a href="https://github.com/DonG4667" target="_blank">GitHub</a>
+  🌐 <a href="https://gabcares.xyz" target="_blank">gabcares.xyz</a> &nbsp;|&nbsp; 🐙 <a href="https://github.com/D0nG4667" target="_blank">GitHub</a>
 </p>
 

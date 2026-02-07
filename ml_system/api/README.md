@@ -110,4 +110,4 @@ docker compose up -d api
     - `bmi`: 0 - 70 kg/m²
     - `age`: 0 - 120 years
 
-*API Developer: DonG4667*
+*API Developer: D0nG4667*
