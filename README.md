@@ -162,14 +162,14 @@ Clinical justification:
 # **📌 7. Deployment Links**
 
 ### **🔗 ML System**
-- **Streamlit App:** *[URL]*  
-- **FastAPI Endpoint:** *[URL]*  
-- **Swagger Docs:** *[URL]*  
+- **Streamlit App:** *[https://diabetes-ml-system.streamlit.app/](https://diabetes-ml-system.streamlit.app/)*  
+- **FastAPI Endpoint:** *[https://statogale-diabetes-disease-outcome-ai-system-ml.hf.space](https://statogale-diabetes-disease-outcome-ai-system-ml.hf.space)*  
+- **Swagger Docs:** *[https://statogale-diabetes-disease-outcome-ai-system-ml.hf.space/docs](https://statogale-diabetes-disease-outcome-ai-system-ml.hf.space/docs)*  
 
 ### **🔗 DL System**
-- **Streamlit App:** *[URL]*  
-- **FastAPI Endpoint:** *[URL]*  
-- **Swagger Docs:** *[URL]*  
+- **Streamlit App:** *[https://diabetes-dl-system.streamlit.app/](https://diabetes-dl-system.streamlit.app/)*  
+- **FastAPI Endpoint:** *[https://statogale-diabetes-disease-outcome-ai-system-dl.hf.space](https://statogale-diabetes-disease-outcome-ai-system-dl.hf.space)*  
+- **Swagger Docs:** *[https://statogale-diabetes-disease-outcome-ai-system-dl.hf.space/docs](https://statogale-diabetes-disease-outcome-ai-system-dl.hf.space/docs)*  
 
 ---
 
