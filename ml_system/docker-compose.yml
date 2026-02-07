@@ -1,0 +1,56 @@
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: gabcares/diabetes-ml-fastapi:latest
+    container_name: backend-fastapi
+    command: uv run uvicorn app:app --host 0.0.0.0 --port 7860
+    volumes:
+      - api:/api
+    ports:
+      - "7860:7860"
+    env_file:
+      - path: ".env"
+        required: true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7860/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      app-tier:
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: gabcares/diabetes-ml-streamlit:latest
+    container_name: client-streamlit
+    command: uv run streamlit run Home.py
+    volumes:
+      - client:/client
+    ports:
+      - "8501:8501"
+    env_file:
+      - path: ".env"
+        required: true
+    depends_on:
+      - api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      app-tier:
+
+networks:
+  app-tier:
+    driver: bridge
+
+volumes:
+  api:
+  client:
