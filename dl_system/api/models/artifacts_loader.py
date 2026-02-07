@@ -12,6 +12,13 @@ import requests
 logger = logging.getLogger(__name__)
 
 class ModelArtifacts:
+    """
+    Singleton-like container for ML artifacts.
+    Loaded at startup.
+    """
+
+    _instance = None
+    
     def __init__(self):
         self.feature_creator = None
         self.preprocessor = None
