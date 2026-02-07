@@ -1,0 +1,28 @@
+name: Deploy ML System to Hugging Face Spaces
+
+on:
+  push:
+    paths:
+      - 'ml_system/api/**'
+    branches:
+      - main
+
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Push to hub
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git config --global user.email "bot@github.com"
+          git config --global user.name "GitHub Actions Bot"
+          git remote add space https://statogale:$HF_TOKEN@huggingface.co/spaces/Statogale/Diabetes_Disease_Outcome_AI_System_ML
+          # Force push the subdirectory content to the space's main branch
+          git subtree split --prefix ml_system/api -b deploy-ml
+          git push -f space deploy-ml:main

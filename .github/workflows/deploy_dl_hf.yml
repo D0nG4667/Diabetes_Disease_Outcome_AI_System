@@ -1,0 +1,28 @@
+name: Deploy DL System to Hugging Face Spaces
+
+on:
+  push:
+    paths:
+      - 'dl_system/api/**'
+    branches:
+      - main
+
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Push to hub
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git config --global user.email "bot@github.com"
+          git config --global user.name "GitHub Actions Bot"
+          git remote add space https://statogale:$HF_TOKEN@huggingface.co/spaces/Statogale/Diabetes_Disease_Outcome_AI_System_DL
+          # Force push the subdirectory content to the space's main branch
+          git subtree split --prefix dl_system/api -b deploy-dl
+          git push -f space deploy-dl:main
