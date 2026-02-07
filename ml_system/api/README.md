@@ -1,3 +1,13 @@
+---
+title: Diabetes Disease Outcome AI System ML
+emoji: 🩺
+colorFrom: green
+colorTo: teal
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # DDOPS-AI: Inference & Explanation Engine
 
 [![Framework](https://img.shields.io/badge/FastAPI-0.109-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com)

@@ -50,7 +50,7 @@ async def lifespan(app: FastAPI):
     
     # Shutdown
     logger.info("Shutting down...")
-    ModelArtifacts.get_instance().clear()
+    get_artifacts().clear()
     
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -107,4 +107,4 @@ app.include_router(explain.router, prefix=settings.API_V1_STR)
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app:app", host="0.0.0.0", port=7860, reload=True)

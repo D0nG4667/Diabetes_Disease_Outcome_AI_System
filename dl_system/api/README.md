@@ -1,3 +1,13 @@
+---
+title: Diabetes Disease Outcome AI System DL
+emoji: 🧠
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 🧠 Healthcare AI Systems: Inference API
 
 ## Overview
@@ -45,16 +55,16 @@ Using `uv` (recommended) for fast dependency resolution:
 
 ```bash
 uv sync
-uv run uvicorn sentry_app:app --host 0.0.0.0 --port 8000 --reload
+uv run uvicorn app:app --host 0.0.0.0 --port 7860 --reload
 ```
 
-*The API will be available at `http://localhost:8000`.*
+*The API will be available at `http://localhost:7860`.*
 
 ---
 
 ## 📚 API Reference
 
-Interact with the autodocs at: **[http://localhost:8000/docs](http://localhost:8000/docs)**
+Interact with the autodocs at: **[http://localhost:7860/docs](http://localhost:7860/docs)**
 
 ### Key Endpoints
 
