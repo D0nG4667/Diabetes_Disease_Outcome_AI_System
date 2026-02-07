@@ -6,6 +6,7 @@ on:
       - 'ml_system/api/**'
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   sync-to-hub:
@@ -22,7 +23,6 @@ jobs:
         run: |
           git config --global user.email "bot@github.com"
           git config --global user.name "GitHub Actions Bot"
-          git remote add space https://oauth2:$HF_TOKEN@huggingface.co/spaces/Statogale/Diabetes_Disease_Outcome_AI_System_ML
-          # Force push the subdirectory content to the space's main branch
+          # Using specific user:token format as per HF docs
           git subtree split --prefix ml_system/api -b deploy-ml
-          git push -f space deploy-ml:main
+          git push --force https://Statogale:${HF_TOKEN}@huggingface.co/spaces/Statogale/Diabetes_Disease_Outcome_AI_System_ML deploy-ml:main
