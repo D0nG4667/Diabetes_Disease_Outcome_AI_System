@@ -71,17 +71,28 @@ class ExplainerService:
             # Top Features
             # sv is (1, n_features)
             sv_flat = sv.flatten()
-            feature_names = patient.model_dump(exclude={'include_shap'}).keys()
             
-            # Map index to valid feature name if pipeline didn't change feature count/order
-            # CAUTION: If pipeline changes features (OneHot), names mismatch.
-            # Assuming 1:1 mapping for this prompt's simplicity or strictly numerical input.
-            # If mismatch, use "Feature N"
-            
-            feature_list = list(feature_names)
-            if len(feature_list) != len(sv_flat):
-                 feature_list = [f"Feature {i}" for i in range(len(sv_flat))]
-            
+            # 3. Features Names Extraction (to match ML System)
+            feature_names = None
+            try:
+                # 1st try: preprocessor (Scaling/Encoding)
+                if self.artifacts.preprocessor and hasattr(self.artifacts.preprocessor, "get_feature_names_out"):
+                    feature_names = self.artifacts.preprocessor.get_feature_names_out()
+                # 2nd try: feature_creator (Pipeline)
+                elif self.artifacts.feature_creator and hasattr(self.artifacts.feature_creator, "get_feature_names_out"):
+                    feature_names = self.artifacts.feature_creator.get_feature_names_out()
+            except Exception as e:
+                logger.warning(f"Could not get feature names from artifacts: {e}")
+
+            if feature_names is None:
+                # Fallback to patient object keys
+                feature_list = list(patient.model_dump(exclude={'include_shap'}).keys())
+                # If mismatch, use "Feature N"
+                if len(feature_list) != len(sv_flat):
+                    feature_list = [f"Feature {i}" for i in range(len(sv_flat))]
+            else:
+                feature_list = list(feature_names)
+
             # Sort by abs value
             indices = np.argsort(-np.abs(sv_flat))[:top_n] # Use user provided top_n
             top_features = [

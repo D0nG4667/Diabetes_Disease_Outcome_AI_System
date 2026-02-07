@@ -28,6 +28,12 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # ---- Stage 2: Runtime ----
 FROM python:3.12-slim
 
+# Install system dependencies for Chromium (Kaleido) and Healthcheck
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    chromium \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy uv binary again so runtime stage has it
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 

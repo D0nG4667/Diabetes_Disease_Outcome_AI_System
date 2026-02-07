@@ -31,7 +31,11 @@ DL_ARTIFACTS = BASE_DIR / "artifacts" / "dl"
 
 DESCRIPTION = """
 This API identifies patients at risk of developing type 2 diabetes (diabetes mellitus) - a chronic condition that occurs when the body's cells become resistant to insulin or when the body doesn't produce enough insulin.\n
- 
+
+### Key Features
+- ** ML Model Prediction**: Uses a XGBoost Classifier model.
+- **Model Explanation**: Integrated SHAP (SHapley Additive exPlanations) values.
+
 ### Results 
 **Diabetes Outcome:** *1 or Yes or High risk* if a patient will develop a type 2 diabetes, and *0 or No or Low risk* otherwise\n
 
