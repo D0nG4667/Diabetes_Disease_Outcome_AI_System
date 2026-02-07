@@ -18,7 +18,6 @@ def display_sidebar_info():
     
     # Icons
     icon_conn = "🟢" if status["connection"] else "🔴"
-    icon_auth = "🔑" if status["auth"] else "🔒"
     icon_model = "🧠" if status["model"] else "💤"
     
     with st.sidebar:
@@ -30,7 +29,6 @@ def display_sidebar_info():
             **System Status**
             
             {icon_conn} Connectivity: {"Online" if status["connection"] else "Offline"}  
-            {icon_auth} Auth: {"Valid" if status["auth"] else "Invalid"}  
             {icon_model} Model: {"Ready" if status["model"] else "Not Ready"}
             
             _{status["message"]}_
@@ -121,7 +119,7 @@ def render_feature_input_section(defaults: dict = {}):
     with c2:
         with st.expander("🧪 Lab Results & Body Metrics", expanded=True):
             glucose = st.number_input("Glucose (mg/dL)", 0, 300, int(defaults.get("glucose", 100)), step=1, help="Plasma glucose concentration")
-            blood_pressure = st.number_input("Blood Pressure (mm Hg)", 0, 200, int(defaults.get("blood_pressure", 72)), step=1, help="Diastolic blood pressure")
+            blood_pressure = st.number_input("Blood Pressure (mm Hg)", 0, 300, int(defaults.get("blood_pressure", 72)), step=1, help="Diastolic blood pressure")
             skin_thickness = st.number_input("Skin Thickness (mm)", 0, 100, int(defaults.get("skin_thickness", 20)), step=1, help="Triceps skin fold thickness")
             insulin = st.number_input("Insulin (mu U/ml)", 0, 900, int(defaults.get("insulin", 80)), step=1, help="2-Hour serum insulin")
             bmi = st.number_input("BMI", 0.0, 70.0, float(defaults.get("bmi", 25.0)), step=0.1, help="Body Mass Index")

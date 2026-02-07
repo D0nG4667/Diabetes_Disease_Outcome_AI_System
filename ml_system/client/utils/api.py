@@ -68,43 +68,29 @@ class APIClient:
         status = {
             "healthy": False,
             "connection": False,
-            "auth": True, # Default to True if no key required yet
             "model": False,
             "message": "Initializing..."
         }
         
         try:
-            # 1. Connection & Model Check
+            # 1. Connection & Model Check via /health
             health_url = f"{self.base_url}/health"
             resp = requests.get(health_url, timeout=2)
             
             if resp.status_code == 200:
                 status["connection"] = True
                 data = resp.json()
-                if data.get("status") == "ok":
+                # ML Backend returns "healthy" when model is loaded
+                if data.get("status") == "healthy" and data.get("artifacts_loaded") is True:
                     status["model"] = True
                 else:
-                    status["message"] = "Model Not Ready"
+                    status["message"] = "Model Not Ready/Loaded"
             else:
                 status["message"] = f"Backend Error ({resp.status_code})"
                 return status
 
-            # 2. Path & Auth Check (Probe /predict)
-            predict_url = f"{self.api_v1}/predict"
-            # Send empty probe
-            resp_probe = requests.post(predict_url, json={}, headers=self._get_headers(), timeout=2)
-            
-            if resp_probe.status_code == 404:
-                status["message"] = "Invalid API URL Path"
-                status["auth"] = False
-            elif resp_probe.status_code in [401, 403]:
-                status["message"] = "Authentication Failed"
-                status["auth"] = False
-            elif resp_probe.status_code in [200, 422]:
-                status["auth"] = True
-            
-            # 3. Final State
-            if status["connection"] and status["model"] and status["auth"]:
+            # 2. Final State Aggregation (Auth is not used in ML system)
+            if status["connection"] and status["model"]:
                 status["healthy"] = True
                 status["message"] = "System Operational"
 
