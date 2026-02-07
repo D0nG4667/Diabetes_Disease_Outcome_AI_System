@@ -68,15 +68,48 @@ def render_prediction_result(prob: float, threshold: float):
     
     st.markdown(
         f"""
-        <div class="css-card metric-container {color_class}">
+        <div class="css-card metric-container {color_class}" style="margin-bottom: 10px;">
             <h2 style="margin:0; color: #333;">{emoji} {outcome_text}</h2>
-            <p style="font-size: 1.2rem; margin-top: 5px;">
-                Probability: <strong>{prob:.1%}</strong> <span style="color:gray">(Threshold: {threshold:.2f})</span>
-            </p>
         </div>
         """,
         unsafe_allow_html=True
     )
+    
+    st.progress(prob)
+    st.caption(f"Risk Probability: {prob:.1%} (Clinical Threshold: {threshold:.2f})")
+    
+    # WHO-Style Recommendations
+    if is_high_risk:
+        st.markdown(
+            """
+            <div style="background-color: #fff7ed; padding: 15px; border-left: 5px solid #f97316; border-radius: 4px; margin-top: 15px;">
+                <h4 style="margin:0; color: #9a3412;">🩺 Expert Clinical Guidance (WHO Standards)</h4>
+                <p style="margin-top: 5px; color: #431407; font-size: 0.95rem;">
+                    <b>Immediate Action Required:</b> The estimated risk exceeds the validated threshold. 
+                    Immediate correlation with laboratory diagnostics (HbA1c ≥ 6.5% or FPG ≥ 126 mg/dL) is recommended. 
+                    Initiate intensive lifestyle modification counseling and screen for associated microvascular complications 
+                    as per the WHO STEPwise approach.
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    else:
+        st.markdown(
+            """
+            <div style="background-color: #f0f9ff; padding: 15px; border-left: 5px solid #0ea5e9; border-radius: 4px; margin-top: 15px;">
+                <h4 style="margin:0; color: #0c4a6e;">🛡️ Preventive Strategy (Expert Recommendation)</h4>
+                <p style="margin-top: 5px; color: #082f49; font-size: 0.95rem;">
+                    <b>Routine Monitoring:</b> Risk is currently below the diagnostic threshold. 
+                    Continue primary prevention through evidence-based dietary patterns and physical activity 
+                    (min. 150 min/week). Re-evaluate clinical status every 24-36 months or upon emergence 
+                    of symptomatic indicators.
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    st.markdown("<br>", unsafe_allow_html=True)
 
 def render_feature_input_section(defaults: dict = {}):
     """Returns a dictionary of input features matching Pima Indians Diabetes dataset."""

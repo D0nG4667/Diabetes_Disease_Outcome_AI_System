@@ -12,8 +12,14 @@ load_css()
 
 render_header("🧠 DL Model Explanation", "Interpretability via SHAP (SHapley Additive exPlanations)")
 
+# Navigation
+col_nav, _ = st.columns([1, 4])
+with col_nav:
+    if st.button("⬅️ Back to Prediction", use_container_width=True):
+        st.switch_page("pages/1_📊_Risk_Prediction.py")
+
 # Check session state for inputs
-inputs = st.session_state.get("last_prediction", None)
+inputs = st.session_state.get("patient_data", None)
 
 if not inputs:
     st.warning("⚠️ No recent prediction found. Please go to the **Risk Prediction** page to generate a prediction first.")
@@ -26,20 +32,24 @@ else:
     # Allow editing
     with st.expander("📝 Edit Patient Data", expanded=False):
         st.info("💡 You can modify values below to simulate 'What-if' scenarios.")
-        inputs = render_feature_input_section(defaults=inputs)
+        # Update inputs directly in session state
+        st.session_state["patient_data"] = render_feature_input_section(defaults=inputs)
+        inputs = st.session_state["patient_data"]
 
 # Controls
-col_ctrl, _ = st.columns([1, 2])
-with col_ctrl:
-    top_n = st.slider("Top Features to Display", 5, 20, 10)
+col1, col2 = st.columns([1, 1])
+with col1:
+    top_n = st.slider("Number of Top Features", 5, 20, 10, help="Select number of most important features to display")
+with col2:
+    plot_toggle = st.checkbox("Generate Summary Plot", value=True, help="Generate visual SHAP summary plot")
     
 if st.button("🔍 Run SHAP Analysis", type="primary"):
     # Update session state with potentially edited values
-    st.session_state["last_prediction"] = inputs
+    st.session_state["patient_data"] = inputs
     
     with st.spinner("Calculating Shapley values using DeepExplainer... (This may take a moment)"):
         # Call API
-        explanation = api_client.explain(inputs, top_n=top_n, plot=True)
+        explanation = api_client.explain(inputs, top_n=top_n, plot=plot_toggle)
         
     if explanation:
         st.toast("SHAP analysis complete!", icon="🧠")

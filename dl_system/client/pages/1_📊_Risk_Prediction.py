@@ -11,12 +11,18 @@ load_css()
 
 render_header("📊 Deep Learning Risk Prediction", "Assess Patient Diabetes Risk")
 
+# Navigation (Optional: Can stay in sidebar, but for consistency with ML)
+col_nav, _ = st.columns([1, 4])
+with col_nav:
+    if st.button("⬅️ Back to Home", use_container_width=True):
+        st.switch_page("Home.py")
+
 tab1, tab2 = st.tabs(["👤 Single Patient", "📂 Batch Processing"])
 
 # --- Single Prediction ---
 with tab1:
     # Inputs (Full Width)
-    defaults = st.session_state.get("last_prediction", {})
+    defaults = st.session_state.get("patient_data", {})
     inputs = render_feature_input_section(defaults=defaults)
     
     # Action & Results
@@ -45,12 +51,8 @@ with tab1:
                 with st.expander("ℹ️ Model Metadata"):
                     st.json(result.get("metadata", {}))
                 
-                # Next Steps action
-                if result["probability"] >= result["threshold"]:
-                    st.warning("⚠️ **Recommendation**: Flag for confirmatory HbA1c test and clinical review.")
-                
                 # Store in session state
-                st.session_state["last_prediction"] = inputs
+                st.session_state["patient_data"] = inputs
                 st.session_state["last_result"] = result
         
         elif "last_result" in st.session_state:

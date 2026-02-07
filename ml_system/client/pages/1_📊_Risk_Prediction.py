@@ -1,6 +1,6 @@
 import streamlit as st
 from utils.api import api_client
-from utils.ui_components import display_header, display_sidebar_info, render_footer
+from utils.ui_components import display_header, display_sidebar_info, render_footer, render_feature_input_section, render_prediction_result
 from datetime import datetime
 
 st.set_page_config(page_title="Risk Prediction", page_icon="📊", layout="wide")
@@ -28,71 +28,38 @@ with tab1:
         }
 
     # Input Form
-    with st.form("prediction_form"):
-        col1, col2 = st.columns(2)
+    inputs = render_feature_input_section(defaults=st.session_state.patient_data)
+    
+    col_btn, col_res = st.columns([1, 2])
+    with col_btn:
+        submit_btn = st.button("🩺 Predict Risk", type="primary", use_container_width=True)
+        explain_placeholder = st.empty()
+
+    with col_res:
+        if submit_btn:
+            # Update session state with new inputs
+            st.session_state.patient_data = inputs
+
+            # Call API
+            with st.spinner("Analyzing patient data..."):
+                result = api_client.predict(st.session_state.patient_data)
+
+            if result:
+                st.toast("Assessment Complete!", icon="🩺")
+                # Save result to session state
+                st.session_state.last_prediction = result
+                
+                render_prediction_result(result["probability"], result["threshold"])
         
-        with col1:
-            pregnancies = st.number_input("Pregnancies", min_value=0, max_value=20, value=st.session_state.patient_data["pregnancies"], help="Number of times pregnant")
-            glucose = st.number_input("Glucose", min_value=0.0, max_value=300.0, value=st.session_state.patient_data["glucose"], step=1.0, help="Plasma glucose concentration")
-            blood_pressure = st.number_input("Blood Pressure (mmHg)", min_value=0.0, max_value=200.0, value=st.session_state.patient_data["blood_pressure"], step=1.0, help="Diastolic blood pressure")
-            skin_thickness = st.number_input("Skin Thickness (mm)", min_value=0.0, max_value=100.0, value=st.session_state.patient_data["skin_thickness"], step=1.0, help="Triceps skin fold thickness")
+        elif "last_prediction" in st.session_state:
+            result = st.session_state.last_prediction
+            render_prediction_result(result["probability"], result["threshold"])
 
-        with col2:
-            insulin = st.number_input("Insulin (mu U/ml)", min_value=0.0, max_value=900.0, value=st.session_state.patient_data["insulin"], step=1.0, help="2-Hour serum insulin")
-            bmi = st.number_input("BMI", min_value=0.0, max_value=70.0, value=st.session_state.patient_data["bmi"], step=0.1, help="Body Mass Index")
-            dpf = st.number_input("Diabetes Pedigree Function", min_value=0.0, max_value=3.0, value=st.session_state.patient_data["diabetes_pedigree_function"], step=0.01, help="Diabetes pedigree score")
-            age = st.number_input("Age", min_value=0, max_value=120, value=st.session_state.patient_data["age"], help="Age in years")
-
-        submit_btn = st.form_submit_button("Predict Risk", type="primary")
-
-    if submit_btn:
-        # Update session state
-        st.session_state.patient_data = {
-            "pregnancies": pregnancies,
-            "glucose": glucose,
-            "blood_pressure": blood_pressure,
-            "skin_thickness": skin_thickness,
-            "insulin": insulin,
-            "bmi": bmi,
-            "diabetes_pedigree_function": dpf,
-            "age": age
-        }
-
-        # Call API
-        with st.spinner("Analyzing patient data..."):
-            result = api_client.predict(st.session_state.patient_data)
-
-        if result:
-            st.toast("Assessment Complete!", icon="🩺")
-            # Save result to session state for Explanation page check
-            st.session_state.last_prediction = result
-            
-            prob = result["probability"]
-            outcome = result["outcome"]
-            threshold = result["threshold"]
-
-            st.divider()
-            st.subheader("Assessment Result")
-            
-            res_col1, res_col2 = st.columns([1, 2])
-            
-            with res_col1:
-                if outcome == 1:
-                    st.error(f"## High Risk")
-                    st.markdown(f"**Outcome**: Positive (1)")
-                else:
-                    st.success(f"## Low Risk")
-                    st.markdown(f"**Outcome**: Negative (0)")
-            
-            with res_col2:
-                st.markdown("### Risk Probability")
-                st.progress(prob)
-                st.caption(f"Probability: {prob:.1%} (Threshold: {threshold})")
-
-                if outcome == 1:
-                     st.warning("⚠️ Recommendation: Further clinical evaluation required.")
-                else:
-                     st.success("✅ Recommendation: Routine monitoring.")
+    # Show Explanation Button if we have a result
+    if "last_prediction" in st.session_state:
+        with explain_placeholder:
+            if st.button("👉 View Model Explanation", use_container_width=True):
+                st.switch_page("pages/2_🧠_Model_Explanation.py")
 
 with tab2:
     st.markdown("### Batch Prediction Upload")
