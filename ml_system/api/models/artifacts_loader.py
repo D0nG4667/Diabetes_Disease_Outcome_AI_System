@@ -44,6 +44,7 @@ class ModelArtifacts:
         else:
             logger.info(f"Artifact {path.name} found locally. Skipping download.")
 
+    # Singleton pattern
     @classmethod
     def get_instance(cls):
         if cls._instance is None:
