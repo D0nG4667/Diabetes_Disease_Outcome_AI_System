@@ -12,12 +12,6 @@ load_css()
 
 render_header("🧠 DL Model Explanation", "Interpretability via SHAP (SHapley Additive exPlanations)")
 
-# Navigation
-col_nav, _ = st.columns([1, 4])
-with col_nav:
-    if st.button("⬅️ Back to Prediction", use_container_width=True):
-        st.switch_page("pages/1_📊_Risk_Prediction.py")
-
 # Check session state for inputs
 inputs = st.session_state.get("patient_data", None)
 

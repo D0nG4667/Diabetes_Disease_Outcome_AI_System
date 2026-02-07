@@ -18,6 +18,12 @@ class DLClient:
         self.api_key = os.getenv("DL_API_KEY", "pneumonoultramicroscopicsilicovolcanoconiosis")
         self.timeout = 10  # seconds
 
+    def get_docs_url(self) -> str:
+        """Return the URL to the Swagger documentation."""
+        from urllib.parse import urlparse
+        parsed = urlparse(self.api_url)
+        return f"{parsed.scheme}://{parsed.netloc}/docs"
+
     def _get_headers(self) -> Dict[str, str]:
         headers = {
             "Content-Type": "application/json",

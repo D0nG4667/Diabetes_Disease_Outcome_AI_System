@@ -7,12 +7,6 @@ st.set_page_config(page_title="Model Explanation", page_icon="🧠", layout="wid
 display_sidebar_info()
 display_header("Model Explanation (XAI)", "Interpret prediction results using SHAP")
 
-# Navigation helper
-col_nav, _ = st.columns([1, 4])
-with col_nav:
-    if st.button("⬅️ Back to Prediction", use_container_width=True):
-        st.switch_page("pages/1_📊_Risk_Prediction.py")
-
 # Check if we have patient data
 if "patient_data" not in st.session_state:
     st.warning("⚠️ No patient data found. Please go to **Risk Prediction** and perform a prediction first.")

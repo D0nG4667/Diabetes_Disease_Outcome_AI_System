@@ -11,12 +11,6 @@ load_css()
 
 render_header("📊 Deep Learning Risk Prediction", "Assess Patient Diabetes Risk")
 
-# Navigation (Optional: Can stay in sidebar, but for consistency with ML)
-col_nav, _ = st.columns([1, 4])
-with col_nav:
-    if st.button("⬅️ Back to Home", use_container_width=True):
-        st.switch_page("Home.py")
-
 tab1, tab2 = st.tabs(["👤 Single Patient", "📂 Batch Processing"])
 
 # --- Single Prediction ---

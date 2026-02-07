@@ -78,17 +78,17 @@ def render_prediction_result(prob: float, threshold: float):
     st.progress(prob)
     st.caption(f"Risk Probability: {prob:.1%} (Clinical Threshold: {threshold:.2f})")
     
-    # WHO-Style Recommendations
+    # Clinical Recommendations
     if is_high_risk:
         st.markdown(
             """
             <div style="background-color: #fff7ed; padding: 15px; border-left: 5px solid #f97316; border-radius: 4px; margin-top: 15px;">
-                <h4 style="margin:0; color: #9a3412;">🩺 Expert Clinical Guidance (WHO Standards)</h4>
+                <h4 style="margin:0; color: #9a3412;">🩺 Clinical Assessment Protocol</h4>
                 <p style="margin-top: 5px; color: #431407; font-size: 0.95rem;">
-                    <b>Immediate Action Required:</b> The estimated risk exceeds the validated threshold. 
-                    Immediate correlation with laboratory diagnostics (HbA1c ≥ 6.5% or FPG ≥ 126 mg/dL) is recommended. 
+                    <b>Immediate Diagnostic Action:</b> The estimated risk exceeds the validated clinical threshold. 
+                    Correlation with laboratory diagnostics (HbA1c ≥ 6.5% or FPG ≥ 126 mg/dL) is recommended. 
                     Initiate intensive lifestyle modification counseling and screen for associated microvascular complications 
-                    as per the WHO STEPwise approach.
+                    consistent with standardized STEPwise protocols.
                 </p>
             </div>
             """,
@@ -98,12 +98,12 @@ def render_prediction_result(prob: float, threshold: float):
         st.markdown(
             """
             <div style="background-color: #f0f9ff; padding: 15px; border-left: 5px solid #0ea5e9; border-radius: 4px; margin-top: 15px;">
-                <h4 style="margin:0; color: #0c4a6e;">🛡️ Preventive Strategy (Expert Recommendation)</h4>
+                <h4 style="margin:0; color: #0c4a6e;">🛡️ Proactive Prevention Strategy</h4>
                 <p style="margin-top: 5px; color: #082f49; font-size: 0.95rem;">
-                    <b>Routine Monitoring:</b> Risk is currently below the diagnostic threshold. 
-                    Continue primary prevention through evidence-based dietary patterns and physical activity 
-                    (min. 150 min/week). Re-evaluate clinical status every 24-36 months or upon emergence 
-                    of symptomatic indicators.
+                    <b>Routine Clinical Monitoring:</b> Risk is currently below the diagnostic threshold. 
+                    Maintain primary prevention through evidence-based nutritional patterns and physical activity. 
+                    Periodic re-evaluation of clinical status is recommended every 24-36 months or upon 
+                    emergence of symptomatic indicators.
                 </p>
             </div>
             """,

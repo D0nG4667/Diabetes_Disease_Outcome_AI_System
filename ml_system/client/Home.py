@@ -52,5 +52,8 @@ with col2:
     st.metric("Model", "XGBoost Classifier")
     st.metric("Precision", "0.90+ (Clinical Grade)")
     st.metric("Status", "Production")
+    
+    st.divider()
+    st.link_button("🌐 Explore API Documentation", api_client.get_docs_url(), use_container_width=True, help="Open Swagger/OpenAPI documentation in a new tab")
 
 render_footer()

@@ -1,5 +1,6 @@
 import streamlit as st
 from datetime import datetime
+from utils.api import api_client
 
 def display_header(title: str, subtitle: str = ""):
     """
@@ -12,16 +13,32 @@ def display_header(title: str, subtitle: str = ""):
     """, unsafe_allow_html=True)
 
 def display_sidebar_info():
-    """
-    Sidebar information and status.
-    """
+    """Render common sidebar info with dynamic status."""
+    status = api_client.get_detailed_status()
+    
+    # Icons
+    icon_conn = "🟢" if status["connection"] else "🔴"
+    icon_auth = "🔑" if status["auth"] else "🔒"
+    icon_model = "🧠" if status["model"] else "💤"
+    
     with st.sidebar:
         st.image("https://cdn-icons-png.flaticon.com/512/2382/2382461.png", width=60) 
         st.markdown("### Diabetes Risk AI")
-        st.info("Ensure patient data is accurate before prediction.")
+        
+        st.info(
+            f"""
+            **System Status**
+            
+            {icon_conn} Connectivity: {"Online" if status["connection"] else "Offline"}  
+            {icon_auth} Auth: {"Valid" if status["auth"] else "Invalid"}  
+            {icon_model} Model: {"Ready" if status["model"] else "Not Ready"}
+            
+            _{status["message"]}_
+            """
+        )
         
         st.divider()
-        st.caption(f"Client v1.0.0")
+        st.caption(f"v1.0.0 | © 2026 HealthAI System")
         st.caption(f"Time: {datetime.now().strftime('%H:%M:%S')}")
 
 def card_metric(label: str, value: str, delta: str = None, help: str = None):
@@ -51,17 +68,17 @@ def render_prediction_result(prob: float, threshold: float):
     st.progress(prob)
     st.caption(f"Risk Probability: {prob:.1%} (Clinical Threshold: {threshold:.2f})")
     
-    # WHO-Style Recommendations
+    # Clinical Recommendations
     if is_high_risk:
         st.markdown(
             """
             <div style="background-color: #fff7ed; padding: 15px; border-left: 5px solid #f97316; border-radius: 4px; margin-top: 15px;">
-                <h4 style="margin:0; color: #9a3412;">🩺 Expert Clinical Guidance (WHO Standards)</h4>
+                <h4 style="margin:0; color: #9a3412;">🩺 Clinical Assessment Protocol</h4>
                 <p style="margin-top: 5px; color: #431407; font-size: 0.95rem;">
-                    <b>Immediate Action Required:</b> The estimated risk exceeds the validated threshold. 
-                    Immediate correlation with laboratory diagnostics (HbA1c ≥ 6.5% or FPG ≥ 126 mg/dL) is recommended. 
+                    <b>Immediate Diagnostic Action:</b> The estimated risk exceeds the validated clinical threshold. 
+                    Correlation with laboratory diagnostics (HbA1c ≥ 6.5% or FPG ≥ 126 mg/dL) is recommended. 
                     Initiate intensive lifestyle modification counseling and screen for associated microvascular complications 
-                    as per the WHO STEPwise approach.
+                    consistent with standardized STEPwise protocols.
                 </p>
             </div>
             """,
@@ -71,12 +88,12 @@ def render_prediction_result(prob: float, threshold: float):
         st.markdown(
             """
             <div style="background-color: #f0f9ff; padding: 15px; border-left: 5px solid #0ea5e9; border-radius: 4px; margin-top: 15px;">
-                <h4 style="margin:0; color: #0c4a6e;">🛡️ Preventive Strategy (Expert Recommendation)</h4>
+                <h4 style="margin:0; color: #0c4a6e;">🛡️ Proactive Prevention Strategy</h4>
                 <p style="margin-top: 5px; color: #082f49; font-size: 0.95rem;">
-                    <b>Routine Monitoring:</b> Risk is currently below the diagnostic threshold. 
-                    Continue primary prevention through evidence-based dietary patterns and physical activity 
-                    (min. 150 min/week). Re-evaluate clinical status every 24-36 months or upon emergence 
-                    of symptomatic indicators.
+                    <b>Routine Clinical Monitoring:</b> Risk is currently below the diagnostic threshold. 
+                    Maintain primary prevention through evidence-based nutritional patterns and physical activity. 
+                    Periodic re-evaluation of clinical status is recommended every 24-36 months or upon 
+                    emergence of symptomatic indicators.
                 </p>
             </div>
             """,
