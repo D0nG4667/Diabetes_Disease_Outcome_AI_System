@@ -1,0 +1,67 @@
+/* Main container setup */
+.stApp {
+    background-color: #f8f9fa; /* Light mode default, dark mode handled by streamlit theme */
+}
+
+/* Glassmorphism Card Style */
+.css-card {
+    border-radius: 12px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px); /* Glass effect */
+    border: 1px solid rgba(16, 185, 129, 0.2); /* Light green border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+/* Headers */
+h1, h2, h3 {
+    font-family: 'Inter', sans-serif;
+    color: #1e293b;
+    font-weight: 700;
+}
+
+h1 {
+    color: #10b981; /* Medical Green */
+}
+
+/* Metrics */
+.metric-container {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid #10b981;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.risk-high {
+    border-left-color: #ef4444 !important; /* Red */
+    background-color: #fef2f2 !important; /* Light red tint */
+}
+
+.risk-low {
+    border-left-color: #10b981 !important; /* Green */
+    background-color: #f0fdf4 !important; /* Light green tint */
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #f8fafc;
+}
+
+/* Custom Button */
+div.stButton > button {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+div.stButton > button:hover {
+    background-color: #059669; /* Darker green */
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    transform: translateY(-1px);
+}
