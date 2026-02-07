@@ -18,12 +18,12 @@ The system follows a microservices-based architecture, ensuring decoupling betwe
 
 ```mermaid
 graph LR
-    User[Clinician / User] -->|HTTPS| Client[Streamlit Client (Frontend)]
-    Client -->|REST API (JSON)| API[FastAPI Inference Engine (Backend)]
-    API -->|Load| Model[XGBoost Classifier]
-    API -->|Compute| SHAP[SHAP Explainer]
+    User["Clinician / User"] -->|HTTPS| Client["Streamlit Client (Frontend)"]
+    Client -->|"REST API (JSON)"| API["FastAPI Inference Engine (Backend)"]
+    API -->|Load| Model["XGBoost Classifier"]
+    API -->|Compute| SHAP["SHAP Explainer"]
     API -->|Response| Client
-    Client -->|Visualize| Plot[Plotly Interactive Charts]
+    Client -->|Visualize| Plot["Plotly Interactive Charts"]
 ```
 
 ### Components
