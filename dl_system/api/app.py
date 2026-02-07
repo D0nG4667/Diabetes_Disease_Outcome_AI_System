@@ -1,28 +1,7 @@
 import os
+import time
 import logging
 import warnings
-
-# Suppress TensorFlow/Keras warnings and OneDNN messages
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
-
-# Filter specific warnings
-warnings.filterwarnings("ignore", message="The name tf.placeholder is deprecated")
-warnings.filterwarnings("ignore", message="Your TensorFlow version is newer than 2.4.0")
-warnings.filterwarnings("ignore", message="The structure of `inputs` doesn't match")
-warnings.filterwarnings("ignore", category=UserWarning, module="tensorflow")
-logging.getLogger("tensorflow").setLevel(logging.ERROR)
-logging.getLogger("absl").setLevel(logging.ERROR)
-# Silence Kaleido/Chromium
-logging.getLogger("kaleido").setLevel(logging.ERROR)
-logging.getLogger("chromium").setLevel(logging.ERROR)
-
-import tensorflow as tf
-tf.get_logger().setLevel('ERROR')
-
-import time
-
-import logging
 from pathlib import Path
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
@@ -41,6 +20,24 @@ from core.exceptions import (
 )
 from models.artifacts_loader import get_artifacts
 from routers import health, predict, explain
+
+# Suppress TensorFlow/Keras warnings and OneDNN messages
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+
+# Filter specific warnings
+warnings.filterwarnings("ignore", message="The name tf.placeholder is deprecated")
+warnings.filterwarnings("ignore", message="Your TensorFlow version is newer than 2.4.0")
+warnings.filterwarnings("ignore", message="The structure of `inputs` doesn't match")
+warnings.filterwarnings("ignore", category=UserWarning, module="tensorflow")
+logging.getLogger("tensorflow").setLevel(logging.ERROR)
+logging.getLogger("absl").setLevel(logging.ERROR)
+# Silence Kaleido/Chromium
+logging.getLogger("kaleido").setLevel(logging.ERROR)
+logging.getLogger("chromium").setLevel(logging.ERROR)
+
+import tensorflow as tf
+tf.get_logger().setLevel('ERROR')
 
 # Setup logging
 setup_logging()

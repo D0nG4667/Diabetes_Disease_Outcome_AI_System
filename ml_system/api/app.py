@@ -105,8 +105,6 @@ app.include_router(health.router)
 app.include_router(predict.router, prefix=settings.API_V1_STR)
 app.include_router(explain.router, prefix=settings.API_V1_STR)
 
-
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
