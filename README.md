@@ -175,60 +175,53 @@ Clinical justification:
 
 # **📌 8. How to Run Locally (uv + pyproject.toml)**
 
-### **1. Clone the repository**
+This project uses **uv** for fast and efficient dependency management. Each system component (ML/DL API & Client) maintains its own `pyproject.toml` for isolation.
+
+### **1. Install uv**
+(If not already installed)
+```bash
+pip install uv
 ```
+
+### **2. Clone the repository**
+```bash
 git clone https://github.com/DonG4667/Diabetes_Disease_Outcome_AI_System.git
 cd Diabetes_Disease_Outcome_AI_System
 ```
 
-### **2. Sync environment using uv**
-This installs all dependencies defined in `pyproject.toml`:
-
-```
-uv sync
-```
-
-### **3. Activate the environment**
-macOS / Linux:
-```
-source .venv/bin/activate
+### **3. Run the ML System**
+**ML API:**
+```bash
+cd ml_system/api
+uv run uvicorn app:app --reload
 ```
 
-Windows:
-```
-.venv\Scripts\activate
-```
-
-### **4. Run the ML Streamlit App**
-```
-uv run streamlit run ml_app/app.py
+**ML Client:**
+(Open a new terminal)
+```bash
+cd ml_system/client
+uv run streamlit run Home.py
 ```
 
-### **5. Run the DL Streamlit App**
-```
-uv run streamlit run dl_app/app.py
-```
-
-### **6. Run the FastAPI services**
-
-ML API:
-```
-uv run uvicorn ml_app.api:app --reload
+### **4. Run the DL System**
+**DL API:**
+```bash
+cd dl_system/api
+uv run uvicorn app:app --reload
 ```
 
-DL API:
-```
-uv run uvicorn dl_app.api:app --reload
-```
-
-### **7. Add new dependencies**
-```
-uv add <package-name>
+**DL Client:**
+(Open a new terminal)
+```bash
+cd dl_system/client
+uv run streamlit run Home.py
 ```
 
-### **8. Update lockfile**
-```
-uv lock
+### **5. Manage Dependencies**
+To add a package to a specific component:
+```bash
+cd <component_directory>
+uv add <package_name>
 ```
 
 ---
@@ -275,8 +268,8 @@ For commercial licensing, custom implementations, or collaboration opportunities
 <br>
 <hr>
 <p align="center">
-  <b>Made with ❤️ by <a href="https://linkedin.com/in/dr-gabriel-okundaye">Dr. Gabriel Okundaye</a></b>
+  <b>Made with ❤️ by <a href="https://linkedin.com/in/dr-gabriel-okundaye" target="_blank">Dr. Gabriel Okundaye</a></b>
   <br>
-  🌐 <a href="https://gabcares.xyz">gabcares.xyz</a> &nbsp;|&nbsp; 🐙 <a href="https://github.com/DonG4667">GitHub</a>
+  🌐 <a href="https://gabcares.xyz" target="_blank">gabcares.xyz</a> &nbsp;|&nbsp; 🐙 <a href="https://github.com/DonG4667" target="_blank">GitHub</a>
 </p>
 
