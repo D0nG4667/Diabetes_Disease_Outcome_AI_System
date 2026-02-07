@@ -61,6 +61,11 @@ def render_prediction_result(prob: float, threshold: float):
         <div style="padding: 20px; border-radius: 10px; background-color: {bg_color}; border: 2px solid {color}; margin-bottom: 10px;">
             <h2 style="margin:0; color: {color};">{emoji} {outcome_text}</h2>
         </div>
+        <style>
+            .stProgress > div > div > div > div {{
+                background-color: {color};
+            }}
+        </style>
         """,
         unsafe_allow_html=True
     )

@@ -66,11 +66,18 @@ def render_prediction_result(prob: float, threshold: float):
     outcome_text = "HIGH RISK (Positive)" if is_high_risk else "LOW RISK (Negative)"
     emoji = "⚠️" if is_high_risk else "✅"
     
+    progress_color = "#ef4444" if is_high_risk else "#3b82f6"
+    
     st.markdown(
         f"""
-        <div class="css-card metric-container {color_class}" style="margin-bottom: 10px;">
+        <div class="css-card metric-container {color_class}" style="margin-bottom: 30px;">
             <h2 style="margin:0; color: #333;">{emoji} {outcome_text}</h2>
         </div>
+        <style>
+            .stProgress > div > div > div > div {{
+                background-color: {progress_color};
+            }}
+        </style>
         """,
         unsafe_allow_html=True
     )
