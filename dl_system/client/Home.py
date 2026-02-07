@@ -1,6 +1,11 @@
 import streamlit as st
+from pathlib import Path
 from utils.ui_components import load_css, render_header, render_sidebar_info, card, render_footer
 from utils.api import api_client
+
+# Resolve paths
+BASE_DIR = Path(__file__).resolve().parent
+LOGO_PATH = BASE_DIR / "assets" / "logos" / "logo.png"
 
 # Page Config
 st.set_page_config(
@@ -61,7 +66,10 @@ with col1:
         """, title=None)
 
 with col2:
-    st.image("assets/logos/logo.png", width="stretch") # Placeholder if logo doesn't exist
+    if LOGO_PATH.exists():
+        st.image(str(LOGO_PATH), use_container_width=True)
+    else:
+        st.info("Clinical Decision Support Tool")
     
     st.warning("""
     **Disclaimer**: This tool is for **investigational use only**. 
