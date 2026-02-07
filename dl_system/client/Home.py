@@ -78,7 +78,7 @@ with col2:
     """)
     
     st.divider()
-    st.link_button("🌐 Explore API Documentation", api_client.get_docs_url(), use_container_width=True, help="Open Swagger/OpenAPI documentation in a new tab")
+    st.link_button("🌐 Explore API Documentation", api_client.get_docs_url(), use_container_width=True, help="Open Swagger/OpenAPI documentation")
 
 render_sidebar_info()
 render_footer()
