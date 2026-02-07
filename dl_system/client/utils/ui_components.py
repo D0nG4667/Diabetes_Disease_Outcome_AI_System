@@ -1,10 +1,19 @@
 import streamlit as st
+from pathlib import Path
 from utils.api import api_client
 
-def load_css(file_name="assets/css/style.css"):
-    """Inject CSS into Streamlit app."""
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+def load_css():
+    """Inject CSS into Streamlit app from assets/css/style.css."""
+    # Resolve path relative to this file: utils/ui_components.py -> utils -> client -> assets...
+    css_path = Path(__file__).resolve().parent.parent / "assets" / "css" / "style.css"
+    
+    try:
+        with open(css_path) as f:
+            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.error(f"CSS file not found at: {css_path}")
+    except Exception as e:
+        st.error(f"Error loading CSS: {e}")
 
 def render_header(title: str, subtitle: str = ""):
     """Render a styled header."""
