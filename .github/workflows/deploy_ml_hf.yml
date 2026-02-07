@@ -22,7 +22,7 @@ jobs:
         run: |
           git config --global user.email "bot@github.com"
           git config --global user.name "GitHub Actions Bot"
-          git remote add space https://statogale:$HF_TOKEN@huggingface.co/spaces/Statogale/Diabetes_Disease_Outcome_AI_System_ML
+          git remote add space https://oauth2:$HF_TOKEN@huggingface.co/spaces/Statogale/Diabetes_Disease_Outcome_AI_System_ML
           # Force push the subdirectory content to the space's main branch
           git subtree split --prefix ml_system/api -b deploy-ml
           git push -f space deploy-ml:main
