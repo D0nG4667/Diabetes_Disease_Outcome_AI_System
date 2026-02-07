@@ -5,7 +5,7 @@ from utils.ui_components import (
     load_css, render_header, render_sidebar_info, render_footer,
     render_feature_input_section
 )
-from utils.api_client import api_client
+from utils.api import api_client
 
 st.set_page_config(page_title="Model Explanation", page_icon="🧠", layout="wide")
 load_css()

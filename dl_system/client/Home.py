@@ -1,6 +1,6 @@
 import streamlit as st
 from utils.ui_components import load_css, render_header, render_sidebar_info, card, render_footer
-from utils.api_client import api_client
+from utils.api import api_client
 
 # Page Config
 st.set_page_config(

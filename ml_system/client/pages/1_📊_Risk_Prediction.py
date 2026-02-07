@@ -9,7 +9,6 @@ display_sidebar_info()
 display_header("Patient Risk Prediction", "Enter clinical parameters for assessment")
 
 import pandas as pd
-import time
 
 # Tabs for Mode Selection
 tab1, tab2 = st.tabs(["Manual Assessment", "Batch Assessment (CSV)"])

@@ -1,6 +1,5 @@
 import streamlit as st
-import base64
-from utils.api_client import api_client
+from utils.api import api_client
 
 def load_css(file_name="assets/css/style.css"):
     """Inject CSS into Streamlit app."""

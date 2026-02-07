@@ -4,7 +4,7 @@ from utils.ui_components import (
     load_css, render_header, render_sidebar_info, 
     render_feature_input_section, render_prediction_result, card, render_footer
 )
-from utils.api_client import api_client
+from utils.api import api_client
 
 st.set_page_config(page_title="Risk Prediction", page_icon="📊", layout="wide")
 load_css()
