@@ -2,7 +2,7 @@
 title: Diabetes Disease Outcome AI System ML
 emoji: 🩺
 colorFrom: green
-colorTo: teal
+colorTo: yellow
 sdk: docker
 app_port: 7860
 pinned: false
