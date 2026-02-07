@@ -8,8 +8,6 @@ from core.config import settings
 from core.exceptions import ArtifactLoadError
 from utils.temperature_scaling import TemperatureScaler
 import requests
-import shutil
-
 
 logger = logging.getLogger(__name__)
 
@@ -28,14 +26,15 @@ class ModelArtifacts:
             logger.info(f"Downloading {path.name} from {url}...")
             path.parent.mkdir(parents=True, exist_ok=True)
             try:
-                response = requests.get(url, stream=True)
-                response.raise_for_status()
-                with open(path, 'wb') as f:
-                    shutil.copyfileobj(response.raw, f)
+                with requests.get(url, stream=True) as response:
+                    response.raise_for_status()
+                    with open(path, "wb") as f:
+                        for chunk in response.iter_content(chunk_size=8192):
+                            if chunk:
+                                f.write(chunk)
                 logger.info(f"Downloaded {path.name}")
             except Exception as e:
                 logger.error(f"Failed to download {path.name}: {e}")
-                # We don't raise here, we let the load fail naturally or warn
         else:
             logger.info(f"Artifact {path.name} found locally. Skipping download.")
 
@@ -131,8 +130,7 @@ class ModelArtifacts:
         self.is_loaded = False
         logger.info("Artifacts unloaded.")
 
-# Global instance
-artifacts = ModelArtifacts()
 
+# Global instance
 def get_artifacts() -> ModelArtifacts:
-    return artifacts
+    return ModelArtifacts.get_instance()

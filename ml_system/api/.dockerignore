@@ -1,21 +1,25 @@
-# Python-generated files
+# Git
+.git
+.gitignore
+
+# Python
 __pycache__/
 *.py[oc]
 build/
 dist/
 wheels/
 *.egg-info
-
-# Virtual environments
-.venv
-
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
 
 # env
 .env
+.env*.local
 
 # vercel
 .vercel
-.env*.local
 
 # Artifacts and models (auto-downloaded)
 artifacts/
